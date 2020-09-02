@@ -3,6 +3,7 @@ using Spring.Http.Converters.Json;
 using Spring.Rest.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,12 +20,11 @@ namespace OTX_Client
         public JsonSerializerOptions serializerOptions = new JsonSerializerOptions() { WriteIndented = true };
         public void ConfigureRestTemplate()
         {
-            restTemplate = new RestTemplate("https://otx.alienvault.com");
+            restTemplate = new RestTemplate(ConfigurationManager.AppSettings.Get("BaseURL"));
 
             requestEntity = new HttpEntity();
-            requestEntity.Headers["X-OTX-API-KEY"] = "96e493a64ea73f7af266576765143c60ace434a380346934a66780b7f6601a3f";
-            requestEntity.Headers.Add("User-Agent", 
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36");
+            requestEntity.Headers["X-OTX-API-KEY"] = ConfigurationManager.AppSettings.Get("APIKey");
+            requestEntity.Headers.Add("User-Agent", ConfigurationManager.AppSettings.Get("UserAgent"));
             requestEntity.Headers.ContentType = MediaType.APPLICATION_JSON;
         }
 
@@ -50,7 +50,7 @@ namespace OTX_Client
             parameters = new Dictionary<string, object>();
             parameters.Add("pulseId", pulseId);
 
-            int limit = 20;
+            int limit = int.Parse(ConfigurationManager.AppSettings.Get("ObjectLimit"));
             List<Indicator> indicators = new List<Indicator>();
             IndicatorPage indicatorPage;
             HttpResponseMessage<string> response = restTemplate.Exchange<string>("/api/v1/pulses/{pulseId}/indicators", HttpMethod.GET, requestEntity, parameters);
@@ -116,7 +116,7 @@ namespace OTX_Client
             parameters = new Dictionary<string, object>();
             parameters.Add("username", username);
 
-            int limit = 20;
+            int limit = int.Parse(ConfigurationManager.AppSettings.Get("ObjectLimit"));
             List<Pulse> pulses = new List<Pulse>();
             PulsePage pulsePage;
             HttpResponseMessage<string> response = restTemplate.Exchange<string>("/api/v1/pulses/user/{username}/?username={username}", HttpMethod.GET, requestEntity, parameters);
@@ -144,7 +144,9 @@ namespace OTX_Client
         }
         public void GetPulsesFromUserWithLimit(string username, int limit)
         {
-            int limitParam = limit > 10 ? 10 : limit;
+            int limitPerRequest = int.Parse(ConfigurationManager.AppSettings.Get("ObjectLimitPerRequest"));
+            int limitParam = limit > limitPerRequest ? limitPerRequest : limit;
+
             parameters = new Dictionary<string, object>();
             parameters.Add("username", username);
             parameters.Add("limit", limitParam);
@@ -179,7 +181,7 @@ namespace OTX_Client
             parameters = new Dictionary<string, object>();
             parameters.Add("username", username);
 
-            int limit = 20;
+            int limit = int.Parse(ConfigurationManager.AppSettings.Get("ObjectLimit"));
             List<Pulse> pulses = new List<Pulse>();
             PulsePage pulsePage;
             HttpResponseMessage<string> response = restTemplate.Exchange<string>("/api/v1/pulses/user/{username}/?username={username}", HttpMethod.GET, requestEntity, parameters);
@@ -220,7 +222,7 @@ namespace OTX_Client
             parameters = new Dictionary<string, object>();
             parameters.Add("pulseId", pulseId);
 
-            int limit = 20;
+            int limit = int.Parse(ConfigurationManager.AppSettings.Get("ObjectLimit"));
             List<Indicator> indicators = new List<Indicator>();
             IndicatorPage indicatorPage;
             HttpResponseMessage<string> response = restTemplate.Exchange<string>("/api/v1/pulses/{pulseId}/indicators/?sort=-created",
@@ -259,7 +261,7 @@ namespace OTX_Client
         }
         public void GetLatestPulsesSubscribed()
         {
-            int limit = 5;
+            int limit = int.Parse(ConfigurationManager.AppSettings.Get("ObjectLimitPerRequest"));
             List<Pulse> pulses = new List<Pulse>();
             PulsePage pulsePage;
             HttpResponseMessage<string> response = restTemplate.Exchange<string>("/api/v1/pulses/subscribed", HttpMethod.GET, requestEntity);
@@ -287,7 +289,7 @@ namespace OTX_Client
         }
         public void BrowseLatestPulses()
         {
-            int limit = 20;
+            int limit = int.Parse(ConfigurationManager.AppSettings.Get("ObjectLimit"));
             List<Pulse> pulses = new List<Pulse>();
             PulsePage pulsePage;
             HttpResponseMessage<string> response = restTemplate.Exchange<string>("/api/v1/search/pulses/?sort=-modified", HttpMethod.GET, requestEntity);

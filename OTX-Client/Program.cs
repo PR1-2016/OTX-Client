@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 
 namespace OTX_Client
 {
@@ -117,25 +116,6 @@ namespace OTX_Client
             RestClient restClient = new RestClient();
             restClient.ConfigureRestTemplate();
             Menu(restClient);
-
-            //Console.WriteLine("------------GET PULSE BY ID------------");
-            //restClient.GetPulseById("5f3fe1749751382284740104");
-            //Console.WriteLine("------------GET INDICATORS BY PULSE ID------------");
-            //restClient.GetIndicatorsByPulseId("5eca9dbd2a4812482fc16e3d");
-            //Console.WriteLine("------------GET PULSES BY USERNAME------------");
-            //restClient.GetPulsesFromUser("david3");
-            //Console.WriteLine("------------GET PULSES BY USERNAME WITH LIMIT------------");
-            //restClient.GetPulsesFromUserWithLimit("AlienVault", 30);
-            //Console.WriteLine("------------GET INDICATOR DETAILS------------");
-            //restClient.GetIndicatorDetails("IPv4", "192.241.237.51", "url_list");
-            //Console.WriteLine("------------GET LATEST PULSES SUBSCRIBED------------");
-            //restClient.GetLatestPulsesSubscribed();
-            //Console.WriteLine("------------BROWSE LATEST PULSES------------");
-            //restClient.BrowseLatestPulses();
-            //Console.WriteLine("------------GET LATEST PULSES FROM USER SINCE------------");
-            //restClient.GetPulsesFromUserSince("AlienVault", new DateTime(2020, 8, 15, 8, 0, 0));
-            //Console.WriteLine("------------GET LATEST INDICATORS BY PULSE ID SINCE------------");
-            //restClient.GetIndicatorsByPulseIdSince("5c76b2acd1420a1aac451307", new DateTime(2020, 8, 24, 15, 0, 0));
         }
     }
 }

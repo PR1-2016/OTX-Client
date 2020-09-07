@@ -33,7 +33,7 @@ namespace OTX_Client
 
         public override string ToString()
         {
-            string retVal = String.Format("Pulse {0}:\nName: '{1}'\nDescription: {2}\nCreated: {3}\nModified: {4}\n", 
+            string retVal = String.Format("\nPulse {0}:\nName: '{1}'\nDescription: {2}\nCreated: {3}\nModified: {4}\n", 
                 Id, Name, Description, Created, Modified);
 
             if (!string.IsNullOrEmpty(Tlp))

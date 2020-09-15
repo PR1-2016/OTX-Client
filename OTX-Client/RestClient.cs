@@ -91,7 +91,6 @@ namespace OTX_Client
                         {
                             IndicatorDetailsGeo indicatorDetails = JsonSerializer.Deserialize<IndicatorDetailsGeo>(response.Body);
                             Console.WriteLine(indicatorDetails);
-                            //File.WriteAllText(string.Format("./indicator-{0}-geoDetails.json", i.Id), JsonSerializer.Serialize(i, serializerOptions));
                             break;
                         }
                     case "url_list":
